@@ -33,7 +33,7 @@ public class AppDbContext : DbContext
 
         // Bookings
         modelBuilder.Entity<Booking>().HasData(
-            new Booking { Id = 1, UserId = 2, RoomId = 1, Purpose = "Praktikum", StartTime = DateTime.Now.AddHours(1), EndTime = DateTime.Now.AddHours(2), Status = BookingStatus.Pending, CreatedAt = DateTime.UtcNow }
+            new Booking { Id = 1, UserId = 2, RoomId = 1, Purpose = "Praktikum", StartTime = new DateTime(2026, 2, 9, 10, 0, 0), EndTime = new DateTime(2026, 2, 9, 12, 0, 0), Status = BookingStatus.Pending, CreatedAt = new DateTime(2026, 2, 9, 9, 0, 0) }
         );
     }
 }
