@@ -1,0 +1,26 @@
+# Build folders
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+
+# VS Code / Visual Studio settings
+.vs/
+.vscode/
+
+# NuGet
+*.nupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+
+# Logs
+*.log
+
+# Others
+*.db
+*.bak
+*.DS_Store
+
