@@ -57,4 +57,20 @@ public class UserController : ControllerBase
             user.Role
         });
     }
+
+    [HttpPost("login")]
+    public IActionResult Login(UserLoginDto dto)
+    {
+        var user = _context.Users.FirstOrDefault(u => u.Username == dto.Username);
+        if (user == null || user.Password != dto.Password)
+            return Unauthorized("Username atau password salah");
+
+        return Ok(new 
+        {
+            user.Id,
+            user.Username,
+            user.Role
+        });
+    }
+
 }

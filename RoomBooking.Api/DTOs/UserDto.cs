@@ -19,3 +19,9 @@ public class UserReadDto
     public string Department { get; set; } = null!;
     public string Role { get; set; } = null!;
 }
+
+public class UserLoginDto
+{
+    public string Username { get; set; } = null!;
+    public string Password { get; set; } = null!;
+}
