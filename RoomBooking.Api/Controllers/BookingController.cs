@@ -38,7 +38,7 @@ public class BookingController : ControllerBase
     }
 
     // GET: api/bookings/{id}
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public IActionResult GetBookingById(int id)
     {
         var booking = _context.Bookings
@@ -48,7 +48,7 @@ public class BookingController : ControllerBase
 
         if (booking == null) return NotFound();
 
-        return Ok(new BookingReadDto
+        return Ok(new
         {
             Id = booking.Id,
             RoomId = booking.RoomId,
@@ -89,6 +89,30 @@ public class BookingController : ControllerBase
         return CreatedAtAction(nameof(GetBookingById), new { id = booking.Id }, booking);
     }
 
+    // GET: api/bookings/room/{roomId}
+    [HttpGet("room/{roomId}")]
+    public IActionResult GetBookingsByRoom(int roomId)
+    {
+        var bookings = _context.Bookings
+            .Include(b => b.Room)
+            .Include(b => b.User)
+            .Where(b => b.RoomId == roomId && b.DeletedAt == null)
+            .Select(b => new BookingReadDto
+            {
+                Id = b.Id,
+                RoomId = b.RoomId,
+                UserId = b.UserId,
+                Purpose = b.Purpose,
+                StartTime = b.StartTime,
+                EndTime = b.EndTime,
+                Status = b.Status,
+            })
+            .ToList();
+
+        return Ok(bookings);
+    }
+
+
     // PATCH: api/bookings/{id}/status
     [HttpPatch("{id}/status")]
     public IActionResult UpdateBookingStatus(int id, BookingUpdateDto dto)
@@ -117,4 +141,24 @@ public class BookingController : ControllerBase
 
         return NoContent();
     }
+
+    [HttpGet("my/{userId}")]
+    public IActionResult GetMyBookings(int userId)
+    {
+        var bookings = _context.Bookings
+            .Include(b => b.Room)
+            .Where(b => b.UserId == userId)
+            .Select(b => new {
+                b.Id,
+                RoomCode = b.Room.RoomCode,
+                b.Purpose,
+                b.StartTime,
+                b.EndTime,
+                b.Status
+            })
+            .ToList();
+
+        return Ok(bookings);
+    }
+
 }
