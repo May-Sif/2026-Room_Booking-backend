@@ -73,6 +73,17 @@ public class BookingController : ControllerBase
         if (dto.StartTime >= dto.EndTime) 
             return BadRequest("StartTime must be before EndTime");
 
+        var overlappingBooking = _context.Bookings
+            .Where(b => b.RoomId == dto.RoomId)
+            .Where(b => b.DeletedAt == null)
+            .Where(b => 
+                dto.StartTime < b.EndTime && dto.EndTime > b.StartTime            
+            ).FirstOrDefault();
+        if (overlappingBooking != null)
+        {
+            return BadRequest("Room sudah dibooking di waktu yang sama");
+        }
+
         var booking = new Booking
         {
             RoomId = dto.RoomId,
